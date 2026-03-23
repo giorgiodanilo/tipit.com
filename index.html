@@ -7,16 +7,23 @@
     <style>
         body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; display: flex; flex-direction: column; align-items: center; padding: 20px; color: #1c1e21; }
         .card { background: white; border-radius: 8px; padding: 20px; width: 100%; max-width: 400px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        
+        /* Estilo Donación */
+        .donation-card { border: 2px solid #f7931a; background: #fffaf5; }
+        .btc-address { background: #eee; padding: 10px; border-radius: 4px; font-family: monospace; font-size: 12px; word-break: break-all; border: 1px solid #ccc; margin: 10px 0; display: block; }
+        .btn-copy { background: #f7931a; color: white; border: none; padding: 8px; width: 100%; border-radius: 4px; cursor: pointer; font-weight: bold; }
+        .btn-copy:hover { background: #e88313; }
+
         .mensaje-recibido { background: #fff; border: 1px solid #ddd; padding: 15px; border-radius: 8px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; animation: fadeIn 0.3s ease; }
         .btn-like { background: #e7f3fe; border: none; color: #1877f2; padding: 5px 12px; border-radius: 5px; cursor: pointer; font-weight: bold; transition: 0.2s; }
         .btn-like:hover { background: #dbeafe; transform: scale(1.05); }
         input, textarea { width: 100%; margin-bottom: 10px; padding: 12px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; font-size: 14px; }
         button.main-btn { width: 100%; background: #1877f2; color: white; border: none; padding: 12px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 16px; }
-        button.main-btn:hover { background: #166fe5; }
         h3 { margin-top: 0; color: #1877f2; }
+        .btc-label { color: #f7931a; font-weight: bold; display: flex; align-items: center; gap: 5px; }
+        
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
-    <link rel="icon" type="image/png" href="tipitcorbata.png">
 </head>
 <body>
 
@@ -27,20 +34,24 @@
         <button onclick="nuevoMensaje()" class="main-btn">Send</button>
     </div>
 
+    <div class="card donation-card">
+        <div class="btc-label">₿ Support this project</div>
+        <p style="font-size: 13px; color: #555; margin: 5px 0;">If you like my content, consider a Bitcoin tip!</p>
+        <code class="btc-address" id="btcAddr">13AC5v6q2UwWcaKUSxRLU5HJ9Lj2NoChFm</code>
+        <button class="btn-copy" onclick="copyAddress()">Copy Address</button>
+    </div>
+
     <div style="width: 100%; max-width: 400px;">
         <h3>Messages Received</h3>
         <div id="contenedor-mensajes"></div>
     </div>
 
     <script>
-        // Almacén de datos (Simulando la $_SESSION de tu PHP)
         let mensajes = JSON.parse(localStorage.getItem('tipit_data')) || [];
 
         function renderizar() {
             const container = document.getElementById('contenedor-mensajes');
             container.innerHTML = '';
-            
-            // Revertimos el orden para mostrar los más nuevos primero (como en tu PHP)
             [...mensajes].reverse().forEach((m, index) => {
                 const realIndex = mensajes.length - 1 - index;
                 container.innerHTML += `
@@ -61,15 +72,8 @@
         function nuevoMensaje() {
             const nombre = document.getElementById('nombre').value;
             const texto = document.getElementById('texto').value;
-
             if (nombre && texto) {
-                mensajes.push({
-                    nombre: nombre,
-                    texto: texto,
-                    interacciones: 0,
-                    id: Date.now()
-                });
-                // Limpiar campos
+                mensajes.push({ nombre, texto, interacciones: 0, id: Date.now() });
                 document.getElementById('nombre').value = '';
                 document.getElementById('texto').value = '';
                 renderizar();
@@ -81,7 +85,13 @@
             renderizar();
         }
 
-        // Carga inicial
+        function copyAddress() {
+            const addr = document.getElementById('btcAddr').innerText;
+            navigator.clipboard.writeText(addr).then(() => {
+                alert("Address copied to clipboard!");
+            });
+        }
+
         renderizar();
     </script>
 </body>
