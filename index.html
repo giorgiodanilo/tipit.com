@@ -16,14 +16,14 @@
             --card-bg: #16181c;
             --text: #e4e6eb;
             --text-dim: #b0b3b8;
-            --footer-height: 120px;
+            --footer-height: 140px;
         }
 
         body { 
             font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text);
             display: flex; flex-direction: column; align-items: center; 
             padding: 20px 20px calc(var(--footer-height) + 40px) 20px; margin: 0;
-            overflow-x: hidden;
+            scroll-behavior: smooth;
         }
 
         .card { 
@@ -33,65 +33,66 @@
         }
 
         h3 { margin: 0 0 15px 0; color: var(--accent); font-size: 1.1rem; display: flex; justify-content: space-between; align-items: center; }
-        .status-online { font-size: 0.7rem; color: #4ade80; display: flex; align-items: center; gap: 4px; font-weight: normal; }
+        .status-online { font-size: 0.7rem; color: #4ade80; display: flex; align-items: center; gap: 4px; }
 
         input, textarea { 
             width: 100%; background: #24282d; border: 1px solid #3e444b; 
             color: white; padding: 12px; border-radius: 8px; margin-bottom: 10px;
-            box-sizing: border-box; font-size: 14px; outline: none; transition: 0.3s;
+            box-sizing: border-box; font-size: 14px; outline: none; transition: border 0.3s;
         }
-        input:focus, textarea:focus { border-color: var(--accent); background: #2a2f35; }
+        input:focus, textarea:focus { border-color: var(--accent); }
 
         .main-btn { 
             width: 100%; background: var(--accent); color: #000; border: none; 
             padding: 12px; border-radius: 8px; cursor: pointer; font-weight: 700; transition: 0.2s;
         }
-        .main-btn:hover { opacity: 0.9; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(255, 156, 91, 0.2); }
+        .main-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+        .main-btn:disabled { background: #555; cursor: not-allowed; }
 
-        /* Estilo del Feed */
+        /* Estilo de la Colección de Feed */
+        .feed-collection { width: 100%; max-width: 420px; }
         .mensaje-recibido { 
             background: var(--card-bg); border: 1px solid #2d3136; padding: 15px; 
-            border-radius: 12px; margin-bottom: 12px; animation: slideUp 0.4s ease-out forwards;
-            position: relative;
+            border-radius: 12px; margin-bottom: 10px; animation: slideIn 0.3s ease;
+            border-left: 3px solid transparent; transition: border-left 0.3s;
         }
-        .username { font-weight: bold; color: var(--accent); font-size: 13px; margin-bottom: 4px; display: block; }
-        .text-content { font-size: 14px; line-height: 1.5; color: var(--text); }
+        .mensaje-recibido:hover { border-left: 3px solid var(--accent); }
+        .username { font-weight: bold; color: var(--accent); font-size: 13px; }
+        .text-content { font-size: 14px; margin-top: 5px; line-height: 1.4; color: var(--text); }
         
-        .like-container { text-align: right; margin-top: 10px; }
-        .btn-like { 
-            background: #1e2126; border: 1px solid #333; color: #888; 
-            border-radius: 20px; padding: 4px 12px; font-size: 11px; cursor: pointer; transition: 0.2s;
-        }
-        .btn-like:hover { border-color: var(--accent); color: var(--accent); }
-
-        /* Footer */
+        /* Footer Fijo */
         footer {
             position: fixed; bottom: 0; left: 0; width: 100%; background: #1a1d21;
-            border-top: 1px solid #333; padding: 12px 0; display: flex;
-            justify-content: center; z-index: 1000; box-shadow: 0 -5px 20px rgba(0,0,0,0.5);
+            border-top: 2px solid var(--accent); padding: 15px 0; display: flex;
+            justify-content: center; z-index: 1000;
         }
-        .footer-content { width: 100%; max-width: 420px; display: flex; align-items: center; gap: 12px; padding: 0 20px; }
-        .qr-mini { background: white; padding: 4px; border-radius: 4px; flex-shrink: 0; }
-        .btc-address { font-family: monospace; font-size: 10px; color: var(--text-dim); background: #000; padding: 4px; border-radius: 4px; display: block; margin: 4px 0; overflow: hidden; text-overflow: ellipsis; }
+        .footer-content { width: 100%; max-width: 420px; display: flex; align-items: center; gap: 15px; padding: 0 20px; }
+        .qr-mini { background: white; padding: 5px; border-radius: 4px; flex-shrink: 0; }
+        .btc-address { 
+            font-family: monospace; font-size: 10px; color: var(--text-dim);
+            background: #000; padding: 5px; border-radius: 4px; display: block;
+            margin: 4px 0; overflow: hidden; text-overflow: ellipsis;
+        }
 
-        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideIn { 
+            from { opacity: 0; transform: translateY(15px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
     </style>
 </head>
 <body>
 
     <div class="card">
-        <h3>Presidential Post <span class="status-online">● Feed Global Activo</span></h3>
-        <input type="text" id="nombre" placeholder="Tu nombre o alias...">
-        <textarea id="texto" placeholder="¿Qué estás pensando?" rows="2"></textarea>
-        <button onclick="enviarMensaje()" class="main-btn" id="btnSend">Publicar en el Feed</button>
+        <h3>Hint up <span class="status-online">● Global Collection</span></h3>
+        <input type="text" id="nombre" placeholder="Username...">
+        <textarea id="texto" placeholder="Share a hint with the world..." rows="2"></textarea>
+        <button onclick="enviarMensaje()" class="main-btn" id="btnSend">SEND TO FEED</button>
     </div>
 
-    <div style="width: 100%; max-width: 420px;">
-        <h3 style="color: var(--text-dim); font-size: 0.9rem; margin-left: 5px;">Actividad de la Comunidad</h3>
+    <div class="feed-collection">
+        <h3 style="color: var(--text-dim); font-size: 0.9rem; margin-left: 5px;">Live Community Feed</h3>
         <div id="contenedor-mensajes">
-            <div style="text-align:center; padding: 40px; color: var(--text-dim);">
-                Cargando feed global...
-            </div>
+            <p style="text-align:center; color: var(--text-dim);">Loading global feed...</p>
         </div>
     </div>
 
@@ -99,97 +100,4 @@
         <div class="footer-content">
             <div class="qr-mini" id="qrcode"></div>
             <div style="flex-grow: 1;">
-                <div style="color: var(--accent); font-weight: bold; font-size: 0.75rem;">₿ PROYECTO TIP JAR</div>
-                <code class="btc-address">13AC5v6q2UwWcaKUSxRLU5HJ9Lj2NoChFm</code>
-                <button style="background: var(--accent); color: #000; border: none; padding: 4px 10px; border-radius: 4px; font-size: 10px; cursor: pointer; font-weight: bold;" onclick="copyAddress()">COPIAR DIRECCIÓN</button>
-            </div>
-        </div>
-    </footer>
-
-    <script>
-        // Configuración de Firebase ya integrada
-        const firebaseConfig = {
-            apiKey: "AIzaSyDd0lxWG6r4xY7bo_Vo6UUFaT_y5ASZo8E",
-            authDomain: "tipit-15c2f.firebaseapp.com",
-            projectId: "tipit-15c2f",
-            storageBucket: "tipit-15c2f.firebasestorage.app",
-            messagingSenderId: "829749900187",
-            appId: "1:829749900187:web:ad6665faed85ceea9a673e",
-            measurementId: "G-TP42YNFR8G"
-        };
-
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.database();
-
-        new QRCode(document.getElementById("qrcode"), {
-            text: "bitcoin:13AC5v6q2UwWcaKUSxRLU5HJ9Lj2NoChFm",
-            width: 54, height: 54
-        });
-
-        // ESCUCHA ACTIVA DEL FEED
-        db.ref('mensajes').orderByChild('timestamp').limitToLast(30).on('value', (snapshot) => {
-            const container = document.getElementById('contenedor-mensajes');
-            container.innerHTML = '';
-            const data = snapshot.val();
-            
-            if (data) {
-                // Ordenar manualmente por timestamp para asegurar el orden cronológico inverso
-                const sortedKeys = Object.keys(data).sort((a, b) => data[b].timestamp - data[a].timestamp);
-                
-                sortedKeys.forEach(key => {
-                    const m = data[key];
-                    const div = document.createElement('div');
-                    div.className = 'mensaje-recibido';
-                    div.innerHTML = `
-                        <span class="username">@${m.nombre}</span>
-                        <div class="text-content">${m.texto}</div>
-                        <div class="like-container">
-                            <button class="btn-like" onclick="darLike('${key}', ${m.likes || 0})">
-                                👍 ${m.likes || 0}
-                            </button>
-                        </div>
-                    `;
-                    container.appendChild(div);
-                });
-            } else {
-                container.innerHTML = '<p style="text-align:center; color: var(--text-dim); margin-top: 20px;">El feed está vacío. ¡Sé el primero en escribir!</p>';
-            }
-        });
-
-        function enviarMensaje() {
-            const nombre = document.getElementById('nombre').value.trim();
-            const texto = document.getElementById('texto').value.trim();
-            
-            if (nombre && texto) {
-                const btn = document.getElementById('btnSend');
-                btn.disabled = true;
-                btn.innerText = "Enviando...";
-
-                db.ref('mensajes').push({
-                    nombre: nombre,
-                    texto: texto,
-                    likes: 0,
-                    timestamp: Date.now()
-                }).then(() => {
-                    document.getElementById('texto').value = '';
-                    btn.disabled = false;
-                    btn.innerText = "Publicar en el Feed";
-                });
-            }
-        }
-
-        function darLike(id, currentLikes) {
-            db.ref('mensajes/' + id).update({
-                likes: currentLikes + 1
-            });
-        }
-
-        function copyAddress() {
-            navigator.clipboard.writeText("13AC5v6q2UwWcaKUSxRLU5HJ9Lj2NoChFm");
-            const btn = event.target;
-            btn.innerText = "¡COPIADO!";
-            setTimeout(() => { btn.innerText = "COPIAR DIRECCIÓN"; }, 2000);
-        }
-    </script>
-</body>
-</html>
+                <div style="color: var(--accent); font-weight: bold; font-size: 0.8rem;">₿ BITCOIN TIP JAR</div>
