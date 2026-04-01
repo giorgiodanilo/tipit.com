@@ -89,61 +89,6 @@
     </style>
 </head>
 <body>
-    <script>// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyDr4RconZK8Aqy0kepmu2mmaTudZeBATvg",
-  authDomain: "hintup2.firebaseapp.com",
-  projectId: "hintup2",
-  storageBucket: "hintup2.firebasestorage.app",
-  messagingSenderId: "933642470863",
-  appId: "1:933642470863:web:85db750c00198cacde7eba",
-  measurementId: "G-XHK5W8QS4E"
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-function enviarComentario() {
-    const user = document.getElementById('username').value;
-    const msg = document.getElementById('message').value;
-
-    if(user && msg) {
-      db.ref('feed').push({
-        username: user,
-        text: msg,
-        timestamp: Date.now() // Esto asegura el orden cronológico
-      });
-      document.getElementById('message').value = ''; // Limpiar campo
-    }
-  }
-
-  // --- FUNCIÓN PARA VISUALIZAR EL FEED EN TIEMPO REAL ---
-  // Este método se queda "escuchando" cambios globalmente
-  db.ref('feed').orderByChild('timestamp').limitToLast(50).on('value', (snapshot) => {
-    const feedContainer = document.getElementById('feed-container');
-    feedContainer.innerHTML = ''; // Limpiar para actualizar
-    
-    const data = snapshot.val();
-    if(data) {
-      // Convertir a array y revertir para ver lo más nuevo arriba
-      Object.keys(data).reverse().forEach(key => {
-        const item = data[key];
-        feedContainer.innerHTML += `
-          <div class="post">
-            <strong>@${item.username}</strong>
-            <p>${item.text}</p>
-          </div>
-        `;
-      });
-    }
-  });
 </script>
     <div class="card">
         <h3>Tip it <span>Presidential Edition</span></h3>
